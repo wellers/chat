@@ -1,0 +1,57 @@
+{
+	"rabbit_version": "3.9.13",
+	"users": [
+		{
+			"name": "test_user",
+			"password_hash": "kI3GCk2jWYt9PJNrrrUnULGsAO8hg5LrmRJdgHSRtwxCQxgc",
+			"hashing_algorithm": "rabbit_password_hashing_sha256",
+			"tags": ""
+		},
+		{
+			"name": "admin",
+			"password_hash": "kI3GCk2jWYt9PJNrrrUnULGsAO8hg5LrmRJdgHSRtwxCQxgc",
+			"hashing_algorithm": "rabbit_password_hashing_sha256",
+			"tags": "administrator"
+		}
+	],
+	"vhosts": [
+		{
+			"name": "/"
+		},
+		{
+			"name": "/test_host"
+		}
+	],
+	"permissions": [
+		{
+			"user": "admin",
+			"vhost": "/test_host",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		},
+		{
+			"user": "test_user",
+			"vhost": "/test_host",
+			"configure": ".*",
+			"write": ".*",
+			"read": ".*"
+		}
+	],
+	"parameters": [],
+	"policies": [
+		{
+			"vhost": "/",
+			"name": "ha",
+			"pattern": "",
+			"definition": {
+				"ha-mode": "all",
+				"ha-sync-mode": "automatic",
+				"ha-sync-batch-size": 5
+			}
+		}
+	],
+	"queues": [],
+	"exchanges": [],
+	"bindings": []
+}

@@ -1,0 +1,47 @@
+services:
+  chat:
+    build: ./chat/
+    ports:
+      - 8081:80
+    environment:
+      - QUEUE_NAME=chat_8081
+    volumes:
+      - ./chat/lib:/app/lib
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+      - history
+    links:
+      - rabbitmq
+      - history
+  chat2:
+    build: ./chat/
+    ports:
+      - 8082:80
+    environment:
+      - QUEUE_NAME=chat_8082
+    volumes:
+      - ./chat/lib:/app/lib
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+      - history
+    links:
+      - rabbitmq
+      - history
+  history:
+    build: ./history/
+    ports:
+      - 8089:80    
+    volumes:
+      - ./history/lib:/app/lib
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+  rabbitmq:
+    build: ./rabbitmq/
+    ports:
+      - 8080:15672
+      - 5672:5672
