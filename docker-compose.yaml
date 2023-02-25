@@ -4,7 +4,15 @@ services:
     ports:
       - 8081:80
     environment:
-      - QUEUE_NAME=chat_8081
+      - HISTORY_URL=http://192.168.50.101:8089/
+      - CLOUDAMQP_HOST=192.168.50.101
+      - CLOUDAMQP_PORT=5672
+      - RABBITMQ_QUEUE_NAME=chat_8081
+      - RABBITMQ_EXCHANGE_NAME=chat
+      - RABBITMQ_ROUTE_NAME=test_route
+      - RABBITMQ_USERNAME=test_user
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_VHOST=/test_host 
     volumes:
       - ./chat/lib:/app/lib
     restart: on-failure
@@ -19,7 +27,15 @@ services:
     ports:
       - 8082:80
     environment:
-      - QUEUE_NAME=chat_8082
+      - HISTORY_URL=http://192.168.50.101:8089/
+      - CLOUDAMQP_HOST=192.168.50.101
+      - CLOUDAMQP_PORT=5672
+      - RABBITMQ_QUEUE_NAME=chat_8082
+      - RABBITMQ_EXCHANGE_NAME=chat
+      - RABBITMQ_ROUTE_NAME=test_route
+      - RABBITMQ_USERNAME=test_user
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_VHOST=/test_host 
     volumes:
       - ./chat/lib:/app/lib
     restart: on-failure
@@ -32,7 +48,16 @@ services:
   history:
     build: ./history/
     ports:
-      - 8089:80    
+      - 8089:80
+    environment:      
+      - CLOUDAMQP_HOST=192.168.50.101
+      - CLOUDAMQP_PORT=5672
+      - RABBITMQ_QUEUE_NAME=chat_history
+      - RABBITMQ_EXCHANGE_NAME=chat
+      - RABBITMQ_ROUTE_NAME=test_route
+      - RABBITMQ_USERNAME=test_user
+      - RABBITMQ_PASSWORD=password
+      - RABBITMQ_VHOST=/test_host 
     volumes:
       - ./history/lib:/app/lib
     restart: on-failure

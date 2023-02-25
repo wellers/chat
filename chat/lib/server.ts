@@ -6,29 +6,32 @@ import amqplib from "amqplib";
 import JSONStream from "JSONStream";
 import superagent from "superagent";
 
-const { QUEUE_NAME } = process.env;
-const hostname = "192.168.50.101";
-const username = "test_user";
-const password = "password";
-const vhost = "/test_host";
-const queue_name = QUEUE_NAME as string;
-const exchange_name = "chat";
-const route_name = "test_route";
+const {
+	HISTORY_URL,
+	CLOUDAMQP_HOST,
+	CLOUDAMQP_PORT,
+	RABBITMQ_USERNAME,
+	RABBITMQ_PASSWORD,
+	RABBITMQ_VHOST,
+	RABBITMQ_QUEUE_NAME,
+	RABBITMQ_EXCHANGE_NAME,
+	RABBITMQ_ROUTE_NAME
+} = process.env;
 
-async function main() {
+async function boot() {
 	const connection = await amqplib.connect({
 		protocol: "amqp",
-		hostname,
-		port: 5672,
-		username,
-		password,
-		vhost
+		hostname: CLOUDAMQP_HOST,
+		port: CLOUDAMQP_PORT as number | undefined,
+		username: RABBITMQ_USERNAME,
+		password: RABBITMQ_PASSWORD,
+		vhost: RABBITMQ_VHOST
 	}, "heartbeat=60");
 
 	const channel = await connection.createChannel();
-	await channel.assertExchange(exchange_name, "fanout");
-	const { queue } = await channel.assertQueue(queue_name, { exclusive: true });
-	await channel.bindQueue(queue, exchange_name, route_name);
+	await channel.assertExchange(RABBITMQ_EXCHANGE_NAME as string, "fanout");
+	const { queue } = await channel.assertQueue(RABBITMQ_QUEUE_NAME as string, { exclusive: true });
+	await channel.bindQueue(queue, RABBITMQ_EXCHANGE_NAME as string, RABBITMQ_ROUTE_NAME as string);
 
 	channel.consume(queue, message => {
 		if (!message) {
@@ -62,7 +65,7 @@ async function main() {
 
 		// query the history service
 		superagent
-			.get(`http://${hostname}:8089/`)
+			.get(HISTORY_URL as string)
 			.on("error", err => console.error(err))
 			.pipe(JSONStream.parse("*"))
 			.on("data", msg => {
@@ -82,4 +85,4 @@ async function main() {
 	server.listen(80);
 }
 
-main().catch(err => console.error(err));
+boot().catch(err => console.error(err));
