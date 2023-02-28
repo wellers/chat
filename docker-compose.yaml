@@ -1,6 +1,6 @@
 services:
-  chat:
-    build: ./chat/
+  server:
+    build: ./server/
     ports:
       - 8081:80
     environment:
@@ -14,7 +14,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_VHOST=/test_host 
     volumes:
-      - ./chat/lib:/app/lib
+      - ./server/lib:/app/lib
     restart: on-failure
     depends_on:
       - rabbitmq
@@ -22,8 +22,8 @@ services:
     links:
       - rabbitmq
       - history
-  chat2:
-    build: ./chat/
+  server2:
+    build: ./server/
     ports:
       - 8082:80
     environment:
@@ -37,7 +37,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_VHOST=/test_host 
     volumes:
-      - ./chat/lib:/app/lib
+      - ./server/lib:/app/lib
     restart: on-failure
     depends_on:
       - rabbitmq

@@ -1,7 +1,7 @@
 {
-	"name": "chat",
+	"name": "server",
 	"version": "1.0.0",
-	"description": "Chat application",
+	"description": "Chat Server application",
 	"author": "Paul Welbourne <paul.welbourne@simpleviewinc.com>",
 	"scripts": {
 		"start": "ts-node --transpile-only ./lib/server.ts",
