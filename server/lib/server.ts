@@ -60,7 +60,7 @@ async function boot() {
 
 		client.on("message", message => {
 			console.log(`Message: ${message}`);
-			channel.publish("chat", "", Buffer.from(message.toString()));
+			channel.publish(RABBITMQ_EXCHANGE_NAME as string, "", Buffer.from(message.toString()));
 		});
 
 		// query the history service
