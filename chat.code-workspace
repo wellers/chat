@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "history"
+		},
+		{
+			"path": "rabbitmq"
+		},
+		{
+			"path": "server"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": ".yarn/sdks/typescript/lib",
+		"typescript.enablePromptUseWorkspaceTsdk": true
+	}
+}
