@@ -3,13 +3,14 @@ WORKDIR /app
 EXPOSE 80
 
 COPY .yarn .yarn
+COPY .pnp.cjs .pnp.cjs
 
 RUN corepack enable && yarn set version 3.3.1
 
 # yarn install in a way that allows caching
 COPY package.json package.json
 COPY yarn.lock yarn.lock
-COPY .yarnrc.yml /app/.yarnrc.yml
+COPY .yarnrc.yml .yarnrc.yml
 RUN yarn install
 COPY public /app/public
 
