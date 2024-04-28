@@ -4,7 +4,7 @@
 	"description": "Chat Server application",
 	"author": "Paul Welbourne <paul.welbourne@simpleviewinc.com>",
 	"scripts": {
-		"start": "ts-node --transpile-only ./lib/server.ts",
+		"start": "tsx ./lib/server.ts",
 		"style": "eslint /app/lib/**/*.ts",
 		"test": "ts-mocha --no-timeouts --paths 'lib/**/*.test.ts'"
 	},
@@ -23,9 +23,8 @@
 		"JSONStream": "1.3.5",
 		"serve-handler": "6.1.5",
 		"superagent": "8.0.9",
-		"ts-node": "10.9.1",
+		"tsx": "4.7.2",
 		"typescript": "4.8.3",
 		"ws": "8.12.1"
-	},
-	"packageManager": "yarn@3.3.1"
+	}
 }

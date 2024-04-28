@@ -46,7 +46,7 @@ async function boot() {
 		await db.put(timestamp(), content);
 
 		channel.ack(message);
-	})
+	});
 
 	const server = createServer(async (req, res) => {
 		res.writeHead(200);
