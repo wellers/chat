@@ -29,9 +29,9 @@ async function boot() {
 	}, "heartbeat=60");
 
 	const channel = await connection.createChannel();
-	await channel.assertExchange(RABBITMQ_EXCHANGE_NAME as string, "fanout");
-	const { queue } = await channel.assertQueue(RABBITMQ_QUEUE_NAME as string);
-	await channel.bindQueue(queue, RABBITMQ_EXCHANGE_NAME as string, RABBITMQ_ROUTE_NAME as string);
+	await channel.assertExchange(RABBITMQ_EXCHANGE_NAME!, "fanout");
+	const { queue } = await channel.assertQueue(RABBITMQ_QUEUE_NAME!);
+	await channel.bindQueue(queue, RABBITMQ_EXCHANGE_NAME!, RABBITMQ_ROUTE_NAME!);
 
 	channel.consume(queue, async message => {
 		if (!message) {

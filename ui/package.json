@@ -1,12 +1,10 @@
 {
-	"name": "server",
+	"name": "ui",
 	"version": "1.0.0",
-	"description": "Chat Server application",
+	"description": "Chat application",
 	"author": "Paul Welbourne <paul.welbourne@simpleviewinc.com>",
 	"scripts": {
-		"start": "tsx ./lib/server.ts",
-		"style": "eslint /app/lib/**/*.ts",
-		"test": "ts-mocha --no-timeouts --paths 'lib/**/*.test.ts'"
+		"start": "tsx ./server/index.ts"
 	},
 	"devDependencies": {
 		"@types/amqplib": "0.10.1",

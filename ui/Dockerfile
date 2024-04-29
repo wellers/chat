@@ -11,7 +11,7 @@ RUN pnpm i
 
 COPY public /app/public
 
-COPY lib /app/lib
+COPY server /app/server
 COPY tsconfig.json /app/tsconfig.json
 
 CMD ["pnpm", "start"]

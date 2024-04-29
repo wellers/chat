@@ -1,6 +1,6 @@
 services:
-  server:
-    build: ./server/
+  ui:
+    build: ./ui/
     ports:
       - 8081:80
     environment:
@@ -14,7 +14,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_VHOST=/test_host 
     volumes:
-      - ./server/lib:/app/lib
+      - ./ui/server:/app/server
     restart: on-failure
     depends_on:
       - rabbitmq
@@ -22,8 +22,8 @@ services:
     links:
       - rabbitmq
       - history
-  server2:
-    build: ./server/
+  ui2:
+    build: ./ui/
     ports:
       - 8082:80
     environment:
@@ -37,7 +37,7 @@ services:
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_VHOST=/test_host 
     volumes:
-      - ./server/lib:/app/lib
+      - ./ui/server:/app/server
     restart: on-failure
     depends_on:
       - rabbitmq
