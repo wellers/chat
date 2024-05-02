@@ -1,10 +1,10 @@
 import http from "http";
 import express from "express";
 import path from "path";
-import { Server, OPEN } from "ws";
+import ws, { OPEN } from "ws";
 import amqplib from "amqplib";
 import JSONStream from "JSONStream";
-import superagent from "superagent";
+import axios from "axios";
 
 const {
 	HISTORY_URL,
@@ -43,6 +43,7 @@ async function boot() {
 		broadcast(message?.content.toString());
 	}, { noAck: true });
 
+	// express to host web front-end
 	const app = express();
 
 	app.use(express.static(path.join(__dirname, "..", "public")));
@@ -53,9 +54,10 @@ async function boot() {
 
 	const server = http.createServer(app);
 
-	const wss = new Server({ server });
+	// websocket server to handle sending and receiving messages
+	const wss = new ws.Server({ server });
 
-	wss.on("connection", client => {
+	wss.on("connection", async client => {
 		console.log("Client connected.");
 
 		client.on("message", message => {
@@ -63,15 +65,19 @@ async function boot() {
 			channel.publish(RABBITMQ_EXCHANGE_NAME as string, "", Buffer.from(message.toString()));
 		});
 
-		// query the history service
-		superagent
-			.get(HISTORY_URL!)
-			.on("error", err => console.error(err))
-			.pipe(JSONStream.parse("*"))
-			.on("data", msg => {
-				console.log("message:", msg);
-				client.send(msg);
-			});
+		// query the history service and stream responses
+		const response = await axios.get(HISTORY_URL!, {
+			responseType: "stream"
+		});
+		
+		const stream = response.data.pipe(JSONStream.parse("*"));
+		
+		stream.on("data", msg => {
+			console.log("message:", msg);
+			client.send(msg);
+		});
+		
+		stream.on("error", err => console.error(err));
 	});
 
 	function broadcast(message) {
