@@ -49,6 +49,7 @@ services:
     build: ./history/
     ports:
       - 8089:80
+      - 9229:9229
     environment:      
       - CLOUDAMQP_HOST=192.168.50.101
       - CLOUDAMQP_PORT=5672

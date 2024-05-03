@@ -5,6 +5,7 @@
 	"author": "Paul Welbourne <paul.welbourne@simpleviewinc.com>",
 	"scripts": {
 		"start": "tsx ./lib/server.ts",
+		"start:dev": "tsx --inspect=0.0.0.0:9229 ./lib/server.ts",
 		"style": "eslint /app/lib/**/*.ts",
 		"test": "ts-mocha --no-timeouts --paths 'lib/**/*.test.ts'"
 	},
