@@ -22,29 +22,6 @@ services:
     links:
       - rabbitmq
       - history
-  ui2:
-    build: ./ui/
-    ports:
-      - 8082:80
-    environment:
-      - HISTORY_URL=http://192.168.50.101:8089/
-      - CLOUDAMQP_HOST=192.168.50.101
-      - CLOUDAMQP_PORT=5672
-      - RABBITMQ_QUEUE_NAME=chat_8082
-      - RABBITMQ_EXCHANGE_NAME=chat
-      - RABBITMQ_ROUTE_NAME=test_route
-      - RABBITMQ_USERNAME=test_user
-      - RABBITMQ_PASSWORD=password
-      - RABBITMQ_VHOST=/test_host 
-    volumes:
-      - ./ui/server:/app/server
-    restart: on-failure
-    depends_on:
-      - rabbitmq
-      - history
-    links:
-      - rabbitmq
-      - history
   history:
     build: ./history/
     ports:

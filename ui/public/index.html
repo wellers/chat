@@ -1,31 +1,58 @@
 <!DOCTYPE html>
 <html>
 	<body>
-		Messages:
-		<div id="messages"></div>
-		<form id="msgForm">
-			<input type="text" placeholder="Send a message" id="msgBox" />
-			<input type="submit" value="Send" />
-		</form>
+		<div id="usernamePlaceholder">
+			<form id="usernameForm">
+				<input type="text" placeholder="Please enter a username" id="username" />
+				<input type="submit" value="Send" />
+			</form>
+		</div>
+		<div id="msgPlaceholder" style="display: none;">
+			Messages:
+			<div id="messages"></div>
+			<form id="msgForm">
+				<input type="text" placeholder="Send a message" id="msgBox" />
+				<input type="submit" value="Send" />
+			</form>
+		</div>
 		<script>
+			let username;
+			const usernamePlaceholder = document.getElementById("usernamePlaceholder");
+			const usernameForm = document.getElementById("usernameForm");
+			const msgPlaceholder = document.getElementById("msgPlaceholder");
+			const msgForm = document.getElementById("msgForm");
+			
+			function showHidePlaceholders() {
+				usernamePlaceholder.style.display = username ? "none" : "block";
+				msgPlaceholder.style.display = username ? "block" : "none";	
+			}
+			
 			const ws = new WebSocket("ws://" + window.document.location.host);
 
-			ws.onmessage = function (message) {
+			ws.onmessage = function (response) {
 				const msgDiv = document.createElement("div");
 				
-				msgDiv.innerHTML = message.data;
+				const { client_id, message } = JSON.parse(response.data);
+				
+				msgDiv.innerHTML = `${client_id} says: "${message}"`;
 				
 				document.getElementById("messages").appendChild(msgDiv);
 			}
 
-			const form = document.getElementById("msgForm");
+			usernameForm.addEventListener("submit", (event) => {
+				event.preventDefault();
 
-			form.addEventListener("submit", (event) => {
+				username = document.getElementById("username").value;
+				
+				showHidePlaceholders();
+			});
+			
+			msgForm.addEventListener("submit", (event) => {
 				event.preventDefault();
 				
 				const message = document.getElementById("msgBox").value;
 				
-				ws.send(message);
+				ws.send(JSON.stringify({ client_id: username,  message }));
 
 				document.getElementById("msgBox").value = "";
 			});
